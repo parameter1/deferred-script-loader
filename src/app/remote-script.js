@@ -1,8 +1,20 @@
+const get = (obj, prop, def) => {
+  if (!obj) return def;
+  const v = obj[prop];
+  return v != null ? v : def;
+};
+
 class RemoteScript {
-  constructor({ src, logger } = {}) {
+  constructor({
+    src,
+    attrs = {},
+    logger,
+  } = {}) {
     if (!src) throw new Error('A script source is required.');
     this.logger = logger;
     this.src = src;
+    this.async = get(attrs, 'async', 1);
+    this.defer = get(attrs, 'defer', 1);
   }
 
   load() {
@@ -11,7 +23,8 @@ class RemoteScript {
       this.logger.log('loading script', src);
       this.promise = new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.async = 1;
+        script.async = this.async;
+        script.defer = this.defer;
         script.src = src;
         script.onload = () => {
           this.logger.log('script loaded successfully', src);

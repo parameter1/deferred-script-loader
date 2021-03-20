@@ -10,6 +10,7 @@ class Queues {
     name,
     src,
     on,
+    attrs,
   } = {}) {
     if (!name) throw new Error('A queue name is required.');
     if (this.queues[name]) throw new Error(`A script queue as already been registered for '${name}'`);
@@ -17,6 +18,7 @@ class Queues {
       name,
       src,
       on,
+      attrs,
       logger: this.logger,
     });
   }

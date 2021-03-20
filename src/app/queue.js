@@ -8,11 +8,12 @@ class Queue {
     name,
     src,
     on,
+    attrs,
     logger,
   } = {}) {
     if (!EVENTS.includes(on)) throw new Error(`No event type found for '${on}'`);
     this.name = name;
-    this.script = new RemoteScript({ src, logger });
+    this.script = new RemoteScript({ src, attrs, logger });
     this.on = on;
     this.fns = [];
     this.logger = logger;
