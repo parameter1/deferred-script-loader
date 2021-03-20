@@ -1,0 +1,13 @@
+{
+  "name": "@parameter1/deferred-script-loader",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "repository": "https://github.com/parameter1/deferred-script-loader.git",
+  "author": "Jacob Bare <jacob@parameter1.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
