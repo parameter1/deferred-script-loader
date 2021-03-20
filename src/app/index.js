@@ -9,9 +9,10 @@ class App {
    */
   constructor({ debug = false } = {}) {
     this.logger = new Logger({ enabled: debug });
-    this.queues = new Queues();
+    this.queues = new Queues({ logger: this.logger });
     this.commands = [
       { handler: this.queues, method: 'register', as: 'register' },
+      { handler: this.queues, method: 'call', as: 'call' },
     ].reduce((o, binding) => {
       const { handler, method } = binding;
       return { ...o, [binding.as]: handler[method].bind(handler) };

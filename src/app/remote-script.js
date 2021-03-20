@@ -1,12 +1,31 @@
-import { EVENTS } from './constants';
-
 class RemoteScript {
-  constructor({ src, on } = {}) {
+  constructor({ src, logger } = {}) {
     if (!src) throw new Error('A script source is required.');
-    if (!EVENTS.includes(on)) throw new Error(`No event type found for '${on}'`);
-
+    this.logger = logger;
     this.src = src;
-    this.on = on;
+  }
+
+  load() {
+    if (!this.promise) {
+      const { src } = this;
+      this.logger.log('loading script', src);
+      this.promise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.async = 1;
+        script.src = src;
+        script.onload = () => {
+          this.logger.log('script loaded successfully', src);
+          resolve();
+        };
+        script.onerror = () => {
+          this.logger.log('script loading failed', src);
+          reject();
+        };
+        const target = document.getElementsByTagName('script')[0];
+        target.parentNode.insertBefore(script, target);
+      });
+    }
+    return this.promise;
   }
 }
 

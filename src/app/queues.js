@@ -1,35 +1,31 @@
-import { EVENTS } from './constants';
-import RemoteScript from './remote-script';
+import Queue from './queue';
 
 class Queues {
-  constructor() {
+  constructor({ logger } = {}) {
+    this.logger = logger;
     this.queues = {};
-    this.on = EVENTS.reduce((o, name) => ({ ...o, [name]: [] }), {});
-
-    // needs to register to various events, load scripts on the event, and then fire any calls.
   }
 
   register({
-    queueName,
+    name,
     src,
     on,
-    init,
   } = {}) {
-    if (!queueName) throw new Error('A queue name is required.');
-    if (!EVENTS.includes(on)) throw new Error(`No event type found for '${on}'`);
-    if (this.queues[queueName]) throw new Error(`A script queue as already been registered for '${queueName}'`);
+    if (!name) throw new Error('A queue name is required.');
+    if (this.queues[name]) throw new Error(`A script queue as already been registered for '${name}'`);
+    this.queues[name] = new Queue({
+      name,
+      src,
+      on,
+      logger: this.logger,
+    });
+  }
 
-    const queue = {
-      script: new RemoteScript({
-        src,
-        on,
-      }),
-      init,
-      calls: [],
-    };
-
-    this.queues[queueName] = queue;
-    this.on[on].push(queue);
+  call({ name, fn }) {
+    const queue = this.queues[name];
+    if (!queue) throw new Error(`No queue has been registered for '${name}'`);
+    queue.push(fn);
+    return this;
   }
 }
 
