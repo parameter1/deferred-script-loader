@@ -14,14 +14,14 @@ class Queue {
     this.name = name;
     this.script = new RemoteScript({ src, logger });
     this.on = on;
-    this.calls = [];
+    this.fns = [];
     this.logger = logger;
     this.addListeners();
   }
 
   push({ fn } = {}) {
     if (!fn || typeof fn !== 'function') throw new Error('The queue call must be a function');
-    this.calls.push(fn);
+    this.fns.push(fn);
     return this;
   }
 
@@ -40,7 +40,7 @@ class Queue {
 
   callQueuedFns() {
     this.logger.log('calling queue functions for', this.name);
-    this.calls.forEach((fn) => fn());
+    this.fns.forEach((fn) => fn());
   }
 }
 
