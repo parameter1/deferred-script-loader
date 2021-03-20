@@ -24,7 +24,7 @@ class Queues {
   call({ name, fn } = {}) {
     const queue = this.queues[name];
     if (!queue) throw new Error(`No queue has been registered for '${name}'`);
-    queue.push(fn);
+    queue.push({ fn });
     return this;
   }
 }
