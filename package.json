@@ -5,9 +5,33 @@
   "repository": "https://github.com/parameter1/deferred-script-loader.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "dev": "webpack serve --open --port 61120",
+    "lint": "eslint --ext .js ./",
+    "test": "yarn lint",
+    "postinstall": "are-you-es5 check -r --silent . | tail -n 1 > ./non_es5_node_modules"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.13.10",
+    "core-js": "^3.9.1"
+  },
   "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "are-you-es5": "^2.1.1",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
     "eslint": "^7.22.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "handlebars": "^4.7.7",
+    "handlebars-loader": "^1.7.1",
+    "html-webpack-plugin": "^5.3.1",
+    "webpack": "^5.27.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }
