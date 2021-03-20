@@ -4,12 +4,58 @@
     <meta charset="utf-8"/>
     <title>{{htmlWebpackPlugin.options.title}}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script>
+      (function (i,s,o,g,r,a,m) {
+        i['__p1defer'] = r; i[r] = i[r] || function () {
+          var args = arguments; (i[r].q = i[r].q || []).push(args);
+          if (args[0] === 'register' && args[1] && args[1].init) args[1].init();
+        }, a = s.createElement(o),
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', '{{ htmlWebpackPlugin.files.js }}', 'deferScript');
+
+      /**
+       * Initializes the deferScript lib.
+       */
+      deferScript('init', { debug: true });
+
+      /**
+       * Registers a new defered script.
+       */
+      deferScript('register', {
+        /**
+         * The queue name to use when invoking `deferScript('call')` commands.
+         * This will not be used when providing an `init` function.
+         */
+        queueName: 'googletag',
+        /**
+         * The remote script src to defer.
+         */
+        src: 'https://securepubads.g.doubleclick.net/tag/js/gpt.js',
+        /**
+         * Determines when to load the remote script `src`.
+         * Valid options include: immediate, ready, load, and never.
+         */
+        on: 'load',
+        /**
+         * When the init function is used, the library assumes the deferred script is using its own queue.
+         * As such, `deferScript('call')` should _not_ be used and the initialized window var should be used instead.
+         * All the defer library will do at this point is load the remote script src at the specified time.
+         * The init function must assign a value to the `window` object directly, not declare a var.
+         */
+        init: function() {
+          window.googletag = window.googletag || {}; window.googletag.cmd = window.googletag.cmd || [];
+        }
+      });
+    </script>
   </head>
   <body>
     <div class="container mt-3">
+      {{!-- can either use our built-in queue (when a lib doesn't provide one) --}}
+      {{!-- or can setup the queue and just defer the loader --}}
       <div class="row">
         <div class="col">
           <h1>{{htmlWebpackPlugin.options.title}}</h1>
+          <script>googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/rotation', [[970,250],[970,90],[728,90],[320,100]], 'div-gpt-ad-1616262158791-167').setTargeting('pos', 'home_page|4').setTargeting('referrer', 'none').defineSizeMapping(googletag.sizeMapping().addSize([980,0], [[970,250],[970,90],[970,66],[728,90]]).addSize([750,0], [[728,90],[300,250]]).addSize([300,0], [[300,50],[300,250],[320,100]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616262158791-167'); });</script>
         </div>
       </div>
 
