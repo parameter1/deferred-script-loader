@@ -1,5 +1,7 @@
 import { EVENTS } from './constants';
 import RemoteScript from './remote-script';
+import onDomReady from './utils/on-dom-ready';
+import onWindowLoad from './utils/on-window-load';
 
 class Queue {
   constructor({
@@ -26,28 +28,9 @@ class Queue {
   addListeners() {
     const { on } = this;
     const run = this.loadAndCallFns.bind(this);
-    if (on === 'never') return;
     if (on === 'immediate') run();
-    if (on === 'load') {
-      if (document.readyState === 'complete') {
-        run();
-      } else {
-        window.addEventListener('load', function onLoad() {
-          window.removeEventListener('load', onLoad);
-          run();
-        });
-      }
-    }
-    if (on === 'ready') {
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function onReady() {
-          document.removeEventListener('DOMContentLoaded', onReady);
-          run();
-        });
-      } else {
-        run();
-      }
-    }
+    if (on === 'load') onWindowLoad(run);
+    if (on === 'ready') onDomReady(run);
   }
 
   loadAndCallFns() {
