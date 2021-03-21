@@ -1,3 +1,4 @@
+import querystring from 'querystring';
 import { EVENTS } from './constants';
 import RemoteScript from './remote-script';
 import onDomReady from './utils/on-dom-ready';
@@ -14,9 +15,9 @@ class Queue {
     if (!EVENTS.includes(on)) throw new Error(`No event type found for '${on}'`);
     this.name = name;
     this.script = new RemoteScript({ src, attrs, logger });
-    this.on = on;
     this.fns = [];
     this.logger = logger;
+    this.setOn(on);
     this.addListeners();
   }
 
@@ -42,6 +43,12 @@ class Queue {
   callQueuedFns() {
     this.logger.log('calling queue functions for', this.name);
     this.fns.forEach((fn) => fn());
+  }
+
+  setOn(on) {
+    const query = querystring.parse(window.location.search.replace(/^\?/, ''));
+    const queryOn = query[`defer.${this.name}.on`];
+    this.on = queryOn && EVENTS.includes(queryOn) ? queryOn : on;
   }
 }
 
