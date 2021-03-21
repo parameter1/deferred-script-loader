@@ -49,7 +49,9 @@ class Queue {
   setOn(on) {
     const query = querystring.parse(window.location.search.replace(/^\?/, ''));
     const queryOn = query[`defer.${this.name}.on`];
-    this.on = queryOn && EVENTS.includes(queryOn) ? queryOn : on;
+    const valid = queryOn && EVENTS.includes(queryOn);
+    this.on = valid ? queryOn : on;
+    if (valid) this.logger.log(`on value '${this.on}' set via query string for`, this.name);
   }
 }
 
