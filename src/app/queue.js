@@ -3,6 +3,7 @@ import { EVENTS } from './constants';
 import RemoteScript from './remote-script';
 import onDomReady from './utils/on-dom-ready';
 import onWindowLoad from './utils/on-window-load';
+import isFn from './utils/is-function';
 
 class Queue {
   constructor({
@@ -12,7 +13,7 @@ class Queue {
     attrs,
     logger,
   } = {}) {
-    if (!EVENTS.includes(on)) throw new Error(`No event type found for '${on}'`);
+    if (!isFn(on) && !EVENTS.includes(on)) throw new Error(`No event type found for '${on}'`);
     this.name = name;
     this.script = new RemoteScript({ src, attrs, logger });
     this.fns = [];
@@ -22,13 +23,13 @@ class Queue {
   }
 
   push({ fn } = {}) {
-    if (!fn || typeof fn !== 'function') throw new Error('The queue call must be a function');
+    if (!isFn(fn)) throw new Error('The queue call must be a function');
     this.fns.push(fn);
     return this;
   }
 
   addListeners() {
-    const { on } = this;
+    const on = isFn(this.on) ? this.on() : this.on;
     const run = this.loadAndCallFns.bind(this);
     if (on === 'immediate') run();
     if (on === 'load') onWindowLoad(run);
