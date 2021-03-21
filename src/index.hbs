@@ -16,6 +16,7 @@
 
       /**
        * Initializes the deferScript lib.
+       * Setting debug to `true` will output console logs
        */
       deferScript('init', { debug: true });
 
@@ -25,7 +26,6 @@
       deferScript('register', {
         /**
          * The queue name to use when invoking `deferScript('call')` commands.
-         * This will not be used when providing an `init` function.
          */
         name: 'googletag',
         /**
@@ -35,8 +35,11 @@
         /**
          * Determines when to load the remote script `src`.
          * Valid options include: immediate, ready, load, and never.
+         * This can also be a function that returns the `on` string value.
          */
-        on: 'load',
+        on: function() {
+          return 'load';
+        },
         /**
          * Queue setup hook.
          * The init function must assign a value to the `window` object directly, not declare a local var.
@@ -45,28 +48,44 @@
           window.googletag = window.googletag || {}; window.googletag.cmd = window.googletag.cmd || [];
           googletag.cmd.push(function() { googletag.pubads().setTargeting('uri', '/'); });
           googletag.cmd.push(function() { googletag.enableServices(); });
-        }
+        },
+        /**
+         * Script attributes to pass.
+         * By default both async and defer are set.
+         */
+         attrs: { async: 1, defer: 0 },
+      });
+
+      deferScript('register', {
+        name: 'lazysizes',
+        src: 'http://afarkas.github.io/lazysizes/lazysizes.min.js',
+        on: 'ready',
       });
     </script>
-    {{!-- <script>
-      window.googletag = window.googletag || {}; window.googletag.cmd = window.googletag.cmd || [];
-      googletag.cmd.push(function() { googletag.pubads().setTargeting('uri', '/'); });
-      googletag.cmd.push(function() { googletag.enableServices(); });
-    </script> --}}
-    {{!-- <script src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script> --}}
   </head>
   <body>
     <div class="container mt-3">
-      {{!-- can either use our built-in queue (when a lib doesn't provide one) --}}
-      {{!-- or can setup the queue and just defer the loader --}}
       <div class="row">
         <div class="col">
           <h1>{{htmlWebpackPlugin.options.title}}</h1>
           <div id="div-gpt-ad-1616266714451-667" class="ad-container__wrapper">
             <script>
-              googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/leaderboard', [[970,90],[728,90],[320,100],[300,250],[320,50],[265,149],[1060,596],[736,414],[428,241]], 'div-gpt-ad-1616266714451-667').setTargeting('pos', 'home_page|1').setTargeting('referrer', 'internal').defineSizeMapping(googletag.sizeMapping().addSize([1070,0], [[970,90],[728,90],[265,149],[1060,596]]).addSize([980,0], [[970,90],[728,90],[265,149],[736,414]]).addSize([750,0], [[728,90],[265,149],[736,414]]).addSize([300,0], [[320,100],[300,250],[320,50],[265,149],[428,241]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616266714451-667'); });
+              // since googletag supports its own queue, the googletag call can be done directly or via the `call` method
+              // googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/leaderboard', [[970,90],[728,90],[320,100],[300,250],[320,50],[265,149],[1060,596],[736,414],[428,241]], 'div-gpt-ad-1616266714451-667').setTargeting('pos', 'home_page|1').setTargeting('referrer', 'internal').defineSizeMapping(googletag.sizeMapping().addSize([1070,0], [[970,90],[728,90],[265,149],[1060,596]]).addSize([980,0], [[970,90],[728,90],[265,149],[736,414]]).addSize([750,0], [[728,90],[265,149],[736,414]]).addSize([300,0], [[320,100],[300,250],[320,50],[265,149],[428,241]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616266714451-667'); });
+              deferScript('call', {
+              name: 'googletag',
+              fn: function() {
+                googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/leaderboard', [[970,90],[728,90],[320,100],[300,250],[320,50],[265,149],[1060,596],[736,414],[428,241]], 'div-gpt-ad-1616266714451-667').setTargeting('pos', 'home_page|1').setTargeting('referrer', 'internal').defineSizeMapping(googletag.sizeMapping().addSize([1070,0], [[970,90],[728,90],[265,149],[1060,596]]).addSize([980,0], [[970,90],[728,90],[265,149],[736,414]]).addSize([750,0], [[728,90],[265,149],[736,414]]).addSize([300,0], [[320,100],[300,250],[320,50],[265,149],[428,241]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616266714451-667'); });
+              }
+            });
             </script>
           </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://img.overdriveonline.com/files/base/randallreilly/all/image/2021/03/Haul_of_fame.6054d6d64c241.png?auto=format%2Ccompress&amp;fit=crop&amp;h=400&amp;q=70&amp;w=600" data-srcset="https://img.overdriveonline.com/files/base/randallreilly/all/image/2021/03/Haul_of_fame.6054d6d64c241.png?auto=format%2Ccompress&amp;dpr=2&amp;fit=crop&amp;h=400&amp;q=70&amp;w=600 2x" class="node__image lazyload" alt="Marhoefer, Ken Waugh, 'Fast Freddie' Lieb, and Idella Marie Hansen">
         </div>
       </div>
 
