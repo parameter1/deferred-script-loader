@@ -9,7 +9,7 @@ class Queue {
   constructor({
     name,
     src,
-    on,
+    on = 'ready',
     attrs,
     logger,
   } = {}) {
