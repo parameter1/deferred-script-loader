@@ -9,7 +9,7 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'deferred.[contenthash:8].js',
+    filename: '[contenthash:8].js',
   },
   devServer: {
     contentBase: './dist',
