@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
+    "deploy": "aws s3 sync dist s3://cdn.parameter1.com/deferred-script-loader/v$npm_package_version/ --cache-control max-agge=31536000,public",
     "watch": "webpack --watch",
     "dev": "webpack serve --open --port 61120",
     "lint": "eslint --ext .js ./",
