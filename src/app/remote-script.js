@@ -15,16 +15,18 @@ class RemoteScript {
     this.src = src;
     this.async = get(attrs, 'async', 1);
     this.defer = get(attrs, 'defer', 1);
+    this.crossOrigin = get(attrs, 'crossOrigin', null);
   }
 
   load() {
     if (!this.promise) {
-      const { src } = this;
+      const { src, crossOrigin } = this;
       this.logger.log('loading script', src);
       this.promise = new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.async = this.async;
         script.defer = this.defer;
+        if (crossOrigin != null) script.crossOrigin = crossOrigin;
         script.src = src;
         script.onload = () => {
           this.logger.log('script loaded successfully', src);
