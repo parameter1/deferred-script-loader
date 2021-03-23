@@ -10,12 +10,18 @@ class Queue {
     name,
     src,
     on = 'ready',
+    targetTag,
     attrs,
     logger,
   } = {}) {
     if (!isFn(on) && !Queue.isOnValid(on)) throw new Error(`No event type found for '${on}'`);
     this.name = name;
-    this.script = new RemoteScript({ src, attrs, logger });
+    this.script = new RemoteScript({
+      src,
+      targetTag,
+      attrs,
+      logger,
+    });
     this.fns = [];
     this.logger = logger;
     this.setOn(on);
