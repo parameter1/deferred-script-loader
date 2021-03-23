@@ -27,7 +27,7 @@ class RemoteScript {
     this.crossOrigin = get(attrs, 'crossOrigin', null);
   }
 
-  load() {
+  load({ on } = {}) {
     if (!this.promise) {
       const { src, crossOrigin } = this;
       this.logger.log('loading script', src);
@@ -46,7 +46,8 @@ class RemoteScript {
           this.logger.log('script loading failed', src);
           reject();
         };
-        const target = document.getElementsByTagName(this.targetTag)[0];
+        const targetTag = on === 'immediate' ? 'head' : this.targetTag;
+        const target = document.getElementsByTagName(targetTag)[0];
         target.appendChild(script);
       });
     }

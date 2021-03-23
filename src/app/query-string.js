@@ -2,7 +2,7 @@ import querystring from 'querystring';
 import isValidOn from './utils/is-valid-on';
 import isValidTarget from './utils/is-valid-target';
 
-const isValidRequestFrame = (v) => v === '1' || v === 'true';
+const isValidBoolean = (v) => v === '1' || v === 'true';
 
 class QueryString {
   constructor({ prefix = 'defer' } = {}) {
@@ -34,7 +34,7 @@ class QueryString {
 
   getGlobalRequestFrame() {
     const value = this.get('requestFrame');
-    return isValidRequestFrame(value);
+    return isValidBoolean(value);
   }
 
   getOnFor(name) {
@@ -44,7 +44,7 @@ class QueryString {
 
   getRequestFrameFor(name) {
     const value = this.get(`${name}.requestFrame`);
-    return isValidRequestFrame(value);
+    return isValidBoolean(value);
   }
 
   getTargetFor(name) {

@@ -49,12 +49,16 @@ class Queue {
 
   loadAndCallFns() {
     this.logger.log(`flushing queue '${this.name}' via '${this.on}'`);
-    this.script.load().then(() => this.callQueuedFns());
+    this.script.load({ on: this.getOn() }).then(() => this.callQueuedFns());
   }
 
   callQueuedFns() {
     this.logger.log('calling queue functions for', this.name);
     this.fns.forEach((fn) => fn());
+  }
+
+  getOn() {
+    return isFn(this.on) ? this.on() : this.on;
   }
 
   setOn(on) {
