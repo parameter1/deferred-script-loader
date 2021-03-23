@@ -2,6 +2,8 @@ import querystring from 'querystring';
 import isValidOn from './utils/is-valid-on';
 import isValidTarget from './utils/is-valid-target';
 
+const isValidRequestFrame = (v) => v === '1' || v === 'true';
+
 class QueryString {
   constructor({ prefix = 'defer' } = {}) {
     this.parsed = querystring.parse(window.location.search.replace(/^\?/, ''));
@@ -10,6 +12,10 @@ class QueryString {
 
   getOn(name) {
     return this.getOnFor(name) || this.getGlobalOn();
+  }
+
+  getRequestFrame(name) {
+    return this.getRequestFrameFor(name) || this.getGlobalRequestFrame();
   }
 
   getTarget(name) {
@@ -26,9 +32,19 @@ class QueryString {
     return isValidTarget(value) ? value : null;
   }
 
+  getGlobalRequestFrame() {
+    const value = this.get('requestFrame');
+    return isValidRequestFrame(value);
+  }
+
   getOnFor(name) {
     const value = this.get(`${name}.on`);
     return isValidOn(value) ? value : null;
+  }
+
+  getRequestFrameFor(name) {
+    const value = this.get(`${name}.requestFrame`);
+    return isValidRequestFrame(value);
   }
 
   getTargetFor(name) {

@@ -9,6 +9,7 @@ class Queue {
     name,
     src,
     on = 'ready',
+    requestFrame,
     targetTag,
     attrs,
     logger,
@@ -27,6 +28,7 @@ class Queue {
     });
     this.fns = [];
     this.logger = logger;
+    this.setRequestFrame(requestFrame);
     this.setOn(on);
     this.addListeners();
   }
@@ -41,8 +43,8 @@ class Queue {
     const on = isFn(this.on) ? this.on() : this.on;
     const run = this.loadAndCallFns.bind(this);
     if (on === 'immediate') run();
-    if (on === 'load') onWindowLoad(run);
-    if (on === 'ready') onDomReady(run);
+    if (on === 'load') onWindowLoad(run, this.requestFrame);
+    if (on === 'ready') onDomReady(run, this.requestFrame);
   }
 
   loadAndCallFns() {
@@ -62,6 +64,16 @@ class Queue {
       this.logger.log(`set ${this.name} 'on=${this.on}' from query param`);
     } else {
       this.on = on;
+    }
+  }
+
+  setRequestFrame(requestFrame) {
+    const query = this.queryString.getRequestFrame(this.name);
+    if (query) {
+      this.requestFrame = query;
+      this.logger.log(`set ${this.name} 'requestFrame=${this.requestFrame}' from query param`);
+    } else {
+      this.requestFrame = requestFrame;
     }
   }
 }

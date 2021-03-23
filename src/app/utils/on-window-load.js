@@ -1,10 +1,18 @@
-export default (callback) => {
+export default (callback, requestFrame) => {
   if (document.readyState === 'complete') {
-    callback();
+    if (requestFrame) {
+      requestAnimationFrame(callback);
+    } else {
+      callback();
+    }
   } else {
     window.addEventListener('load', function fn() {
       window.removeEventListener('load', fn);
-      callback();
+      if (requestFrame) {
+        requestAnimationFrame(callback);
+      } else {
+        callback();
+      }
     });
   }
 };
