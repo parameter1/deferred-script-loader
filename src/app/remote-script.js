@@ -1,4 +1,4 @@
-import { TARGETS } from './constants';
+import isValidTarget from './utils/is-valid-target';
 
 const get = (obj, prop, def) => {
   if (!obj) return def;
@@ -8,16 +8,20 @@ const get = (obj, prop, def) => {
 
 class RemoteScript {
   constructor({
+    name,
     src,
     targetTag = 'body',
     attrs = {},
     logger,
+    queryString,
   } = {}) {
     if (!src) throw new Error('A script source is required.');
-    if (!TARGETS.includes(targetTag)) throw new Error('An invalid append target was specified.');
+    if (!isValidTarget(targetTag)) throw new Error('An invalid append target was specified.');
+    this.name = name;
     this.logger = logger;
+    this.queryString = queryString;
     this.src = src;
-    this.targetTag = targetTag;
+    this.setTargetTag(targetTag);
     this.async = get(attrs, 'async', 1);
     this.defer = get(attrs, 'defer', 1);
     this.crossOrigin = get(attrs, 'crossOrigin', null);
@@ -47,6 +51,16 @@ class RemoteScript {
       });
     }
     return this.promise;
+  }
+
+  setTargetTag(targetTag) {
+    const query = this.queryString.getTarget(this.name);
+    if (query) {
+      this.targetTag = query;
+      this.logger.log(`set ${this.name} 'targetTag=${this.targetTag}' from query param`);
+    } else {
+      this.targetTag = targetTag;
+    }
   }
 }
 

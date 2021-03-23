@@ -1,9 +1,11 @@
 import Queue from './queue';
+import QueryString from './query-string';
 
 class Queues {
-  constructor({ logger } = {}) {
+  constructor({ logger, queryPrefix } = {}) {
     this.logger = logger;
     this.queues = {};
+    this.queryString = new QueryString({ prefix: queryPrefix });
   }
 
   register({
@@ -22,6 +24,7 @@ class Queues {
       targetTag,
       attrs,
       logger: this.logger,
+      queryString: this.queryString,
     });
   }
 
