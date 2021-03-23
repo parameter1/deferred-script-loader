@@ -13,7 +13,7 @@ class Queue {
     attrs,
     logger,
   } = {}) {
-    if (!isFn(on) && !EVENTS.includes(on)) throw new Error(`No event type found for '${on}'`);
+    if (!isFn(on) && !Queue.isOnValid(on)) throw new Error(`No event type found for '${on}'`);
     this.name = name;
     this.script = new RemoteScript({ src, attrs, logger });
     this.fns = [];
@@ -47,11 +47,24 @@ class Queue {
   }
 
   setOn(on) {
+    const { isOnValid } = Queue;
     const query = querystring.parse(window.location.search.replace(/^\?/, ''));
-    const queryOn = query[`defer.${this.name}.on`];
-    const valid = queryOn && EVENTS.includes(queryOn);
-    this.on = valid ? queryOn : on;
-    if (valid) this.logger.log(`on value '${this.on}' set via query string for`, this.name);
+    const queueParam = `defer.${this.name}.on`;
+
+    const ons = { global: query['defer.on'], query: query[queueParam] };
+    if (isOnValid(ons.query)) {
+      this.on = ons.query;
+      this.logger.log('setting `on` value from queue query param', queueParam, this.name, this.on);
+    } else if (isOnValid(ons.global)) {
+      this.on = ons.global;
+      this.logger.log('setting `on` value from global query param', this.name, this.on);
+    } else {
+      this.on = on;
+    }
+  }
+
+  static isOnValid(on) {
+    return on && EVENTS.includes(on);
   }
 }
 
