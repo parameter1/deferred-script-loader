@@ -11,7 +11,7 @@
           var args = arguments; (i[r].q = i[r].q || []).push(args);
           if (args[0] === 'register' && args[1] && args[1].init) args[1].init();
         }, a = s.createElement(o),
-          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+          m = s.getElementsByTagName(o)[0]; a.async = 1; a.defer = 1; a.src = g; m.parentNode.insertBefore(a, m)
       })(window, document, 'script', '{{ htmlWebpackPlugin.files.js }}', 'deferScript');
 
       /**
@@ -19,6 +19,25 @@
        * Setting debug to `true` will output console logs
        */
       deferScript('init', { debug: true });
+      deferScript('register', {
+        name: 'p1events',
+        src: 'https://cdn.parameter1.com/p1-events/1ed2a30f.js',
+        on: 'load',
+        targetTag: 'head',
+        init: function() { var i = window, r = 'p1events'; i['__p1e'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments); }; }
+      });
+      deferScript('register', {
+        name: 'fortnight',
+        src: 'https://cdn.parameter1.com/native-x/1.0.0-rc.4.3.js',
+        on: 'load',
+        init: function() { var i = window, r = 'fortnight'; i['FortnightObject'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments); }; }
+      });
+      deferScript('register', {
+        name: 'dataLayer',
+        src: 'https://www.googletagmanager.com/gtm.js?id=GTM-NDC3FQX',
+        on: 'load',
+        init: function() { var w = window, l = 'dataLayer'; w[l] = w[l] || []; }
+      });
 
       /**
        * Registers a new defered script.
@@ -37,9 +56,7 @@
          * Valid options include: immediate, ready, load, and never.
          * This can also be a function that returns the `on` string value.
          */
-        on: function() {
-          return 'load';
-        },
+        on: 'immediate',
         /**
          * Queue setup hook.
          * The init function must assign a value to the `window` object directly, not declare a local var.
@@ -53,7 +70,7 @@
          * Script attributes to pass.
          * By default both async and defer are set.
          */
-         attrs: { async: 1, defer: 0 },
+         attrs: { async: 1, defer: 1 },
       });
 
       deferScript('register', {
@@ -70,14 +87,31 @@
           <h1>{{htmlWebpackPlugin.options.title}}</h1>
           <div id="div-gpt-ad-1616266714451-667" class="ad-container__wrapper">
             <script>
+              p1events('init', {
+                tenant: 'randallreilly',
+                realm: '5fce561dd28860bc33b823ce',
+                env: 'production',
+                debug: true,
+                uri: 'https://db0y8smio0.execute-api.us-east-2.amazonaws.com/default/p1-website-events-enqueue',
+                cookieDomain: 'overdriveonline.com',
+                identityQueryBuilder: function(query) {
+                  var id = query.oly_enc_id;
+                  if (id) return 'omeda.rrpcd.customer*' + id + '~encoded';
+                }
+              });
+
+              fortnight('init', { domain: 'https://randallreilly.native-x.parameter1.com' });
+
               // since googletag supports its own queue, the googletag call can be done directly or via the `call` method
-              // googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/leaderboard', [[970,90],[728,90],[320,100],[300,250],[320,50],[265,149],[1060,596],[736,414],[428,241]], 'div-gpt-ad-1616266714451-667').setTargeting('pos', 'home_page|1').setTargeting('referrer', 'internal').defineSizeMapping(googletag.sizeMapping().addSize([1070,0], [[970,90],[728,90],[265,149],[1060,596]]).addSize([980,0], [[970,90],[728,90],[265,149],[736,414]]).addSize([750,0], [[728,90],[265,149],[736,414]]).addSize([300,0], [[320,100],[300,250],[320,50],[265,149],[428,241]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616266714451-667'); });
+              googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/leaderboard', [[970,90],[728,90],[320,100],[300,250],[320,50],[265,149],[1060,596],[736,414],[428,241]], 'div-gpt-ad-1616266714451-667').setTargeting('pos', 'home_page|1').setTargeting('referrer', 'internal').defineSizeMapping(googletag.sizeMapping().addSize([1070,0], [[970,90],[728,90],[265,149],[1060,596]]).addSize([980,0], [[970,90],[728,90],[265,149],[736,414]]).addSize([750,0], [[728,90],[265,149],[736,414]]).addSize([300,0], [[320,100],[300,250],[320,50],[265,149],[428,241]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616266714451-667'); });
+              /*
               deferScript('call', {
-              name: 'googletag',
-              fn: function() {
-                googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/leaderboard', [[970,90],[728,90],[320,100],[300,250],[320,50],[265,149],[1060,596],[736,414],[428,241]], 'div-gpt-ad-1616266714451-667').setTargeting('pos', 'home_page|1').setTargeting('referrer', 'internal').defineSizeMapping(googletag.sizeMapping().addSize([1070,0], [[970,90],[728,90],[265,149],[1060,596]]).addSize([980,0], [[970,90],[728,90],[265,149],[736,414]]).addSize([750,0], [[728,90],[265,149],[736,414]]).addSize([300,0], [[320,100],[300,250],[320,50],[265,149],[428,241]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616266714451-667'); });
-              }
-            });
+                name: 'googletag',
+                fn: function() {
+                  googletag.cmd.push(function() { googletag.defineSlot('/142181607/ovd/leaderboard', [[970,90],[728,90],[320,100],[300,250],[320,50],[265,149],[1060,596],[736,414],[428,241]], 'div-gpt-ad-1616266714451-667').setTargeting('pos', 'home_page|1').setTargeting('referrer', 'internal').defineSizeMapping(googletag.sizeMapping().addSize([1070,0], [[970,90],[728,90],[265,149],[1060,596]]).addSize([980,0], [[970,90],[728,90],[265,149],[736,414]]).addSize([750,0], [[728,90],[265,149],[736,414]]).addSize([300,0], [[320,100],[300,250],[320,50],[265,149],[428,241]]).build()).setCollapseEmptyDiv(true, true).addService(googletag.pubads()); googletag.display('div-gpt-ad-1616266714451-667'); });
+                }
+              });
+              */
             </script>
           </div>
         </div>
