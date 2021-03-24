@@ -29,29 +29,43 @@ class RemoteScript {
 
   load({ on } = {}) {
     if (!this.promise) {
-      const { src, crossOrigin } = this;
+      const { src } = this;
       this.logger.log('loading script', src);
       this.promise = new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.async = this.async;
-        script.defer = this.defer;
-        script.type = 'text/javascript';
-        if (crossOrigin != null) script.crossOrigin = crossOrigin;
-        script.src = src;
+        const script = this.buildScriptElement();
         script.onload = () => {
           this.logger.log('script loaded successfully', src);
           resolve();
         };
         script.onerror = () => {
-          this.logger.log('script loading failed', src);
+          this.logger.force('error', 'script loading failed', src);
           reject();
         };
-        const targetTag = on === 'immediate' ? 'head' : this.targetTag;
-        const target = document.getElementsByTagName(targetTag)[0];
-        target.appendChild(script);
+        this.insertElement({ script, on });
       });
     }
     return this.promise;
+  }
+
+  buildScriptElement() {
+    const { crossOrigin } = this;
+    const script = document.createElement('script');
+    script.async = this.async;
+    script.defer = this.defer;
+    script.type = 'text/javascript';
+    if (crossOrigin != null) script.crossOrigin = crossOrigin;
+    script.src = this.src;
+    return script;
+  }
+
+  insertElement({ script, on } = {}) {
+    const targetTag = on === 'immediate' ? 'script' : this.targetTag;
+    const target = document.getElementsByTagName(targetTag)[0];
+    if (targetTag === 'script') {
+      target.parentNode.insertBefore(script, target);
+    } else {
+      target.appendChild(script);
+    }
   }
 
   setTargetTag(targetTag) {
