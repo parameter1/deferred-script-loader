@@ -49,7 +49,9 @@ class Queue {
 
   loadAndCallFns() {
     this.logger.log(`flushing queue '${this.name}' via '${this.on}'`);
-    this.script.load({ on: this.getOn() }).then(() => this.callQueuedFns());
+    this.script.load({ on: this.getOn() })
+      .then(() => this.callQueuedFns())
+      .catch(() => this.logger.force('error', `unable to flush queue for '${this.name}'`));
   }
 
   callQueuedFns() {
