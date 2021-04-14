@@ -14,6 +14,7 @@ class Queue {
     attrs,
     logger,
     queryString,
+    onScriptLoad,
   } = {}) {
     if (!isFn(on) && !isValidOn(on)) throw new Error(`No event type found for '${on}'`);
     this.name = name;
@@ -28,6 +29,7 @@ class Queue {
     });
     this.fns = [];
     this.logger = logger;
+    this.onScriptLoad = onScriptLoad;
     this.setRequestFrame(requestFrame);
     this.setOn(on);
     this.addListeners();
@@ -50,7 +52,13 @@ class Queue {
   loadAndCallFns() {
     this.logger.log(`flushing queue '${this.name}' via '${this.on}'`);
     this.script.load({ on: this.getOn() })
-      .then(() => this.callQueuedFns())
+      .then(() => {
+        if (isFn(this.onScriptLoad)) {
+          this.logger.log(`calling onScriptLoad hook for '${this.name}'`);
+          this.onScriptLoad(this);
+        }
+        this.callQueuedFns();
+      })
       .catch(() => this.logger.force('error', `unable to flush queue for '${this.name}'`));
   }
 

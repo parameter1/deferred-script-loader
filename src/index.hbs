@@ -36,7 +36,10 @@
         name: 'dataLayer',
         src: 'https://www.googletagmanager.com/gtm.js?id=GTM-NDC3FQX',
         on: 'load',
-        init: function() { var w = window, l = 'dataLayer'; w[l] = w[l] || []; }
+        init: function() { var w = window, l = 'dataLayer'; w[l] = w[l] || []; },
+        onScriptLoad: function() {
+          console.log('DATA LAYER SCRIPT LOADED!!');
+        }
       });
 
       /**

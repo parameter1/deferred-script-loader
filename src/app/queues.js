@@ -15,6 +15,7 @@ class Queues {
     targetTag,
     requestFrame,
     attrs,
+    onScriptLoad,
   } = {}) {
     if (!name) throw new Error('A queue name is required.');
     if (this.queues[name]) throw new Error(`A script queue as already been registered for '${name}'`);
@@ -27,6 +28,7 @@ class Queues {
       attrs,
       logger: this.logger,
       queryString: this.queryString,
+      onScriptLoad,
     });
   }
 
