@@ -15,6 +15,7 @@ class Queues {
     targetTag,
     requestFrame,
     attrs,
+    onScriptBuild,
     onScriptLoad,
   } = {}) {
     if (!name) throw new Error('A queue name is required.');
@@ -28,6 +29,7 @@ class Queues {
       attrs,
       logger: this.logger,
       queryString: this.queryString,
+      onScriptBuild,
       onScriptLoad,
     });
   }

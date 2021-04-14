@@ -1,4 +1,5 @@
 import isValidTarget from './utils/is-valid-target';
+import isFn from './utils/is-function';
 
 const get = (obj, prop, def) => {
   if (!obj) return def;
@@ -14,6 +15,7 @@ class RemoteScript {
     attrs = {},
     logger,
     queryString,
+    onScriptBuild,
   } = {}) {
     if (!src) throw new Error('A script source is required.');
     if (!isValidTarget(targetTag)) throw new Error('An invalid append target was specified.');
@@ -25,6 +27,7 @@ class RemoteScript {
     this.async = get(attrs, 'async', 1);
     this.defer = get(attrs, 'defer', 1);
     this.crossOrigin = get(attrs, 'crossOrigin', null);
+    this.onScriptBuild = onScriptBuild;
   }
 
   load({ on } = {}) {
@@ -55,6 +58,7 @@ class RemoteScript {
     script.type = 'text/javascript';
     if (crossOrigin != null) script.crossOrigin = crossOrigin;
     script.src = this.src;
+    if (isFn(this.onScriptBuild)) this.onScriptBuild(script);
     return script;
   }
 

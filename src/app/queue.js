@@ -14,6 +14,7 @@ class Queue {
     attrs,
     logger,
     queryString,
+    onScriptBuild,
     onScriptLoad,
   } = {}) {
     if (!isFn(on) && !isValidOn(on)) throw new Error(`No event type found for '${on}'`);
@@ -26,6 +27,7 @@ class Queue {
       attrs,
       logger,
       queryString,
+      onScriptBuild,
     });
     this.fns = [];
     this.logger = logger;
