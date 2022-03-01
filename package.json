@@ -8,7 +8,7 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "dev": "webpack serve --open --port 61120",
+    "dev": "webpack serve --open --port 61120 --host dsl.dev.parameter1.com",
     "lint": "eslint --ext .js ./",
     "test": "yarn lint",
     "postinstall": "are-you-es5 check -r --silent . | tail -n 1 > ./non_es5_node_modules"
