@@ -8,31 +8,39 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "dev": "webpack serve --open --port 61120",
+    "dev": "webpack serve --open --port 61120 --host dsl.dev.parameter1.com",
     "lint": "eslint --ext .js ./",
     "test": "yarn lint",
     "postinstall": "are-you-es5 check -r --silent . | tail -n 1 > ./non_es5_node_modules"
   },
   "dependencies": {
-    "@babel/runtime": "^7.13.10",
-    "core-js": "^3.10.1",
+    "@babel/runtime": "^7.17.2",
+    "core-js": "^3.21.1",
     "querystring": "^0.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.15",
-    "@babel/plugin-transform-runtime": "^7.13.15",
-    "@babel/preset-env": "^7.13.15",
-    "are-you-es5": "^2.1.1",
-    "babel-loader": "^8.2.2",
-    "clean-webpack-plugin": "^3.0.0",
-    "eslint": "^7.23.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "are-you-es5": "^2.1.2",
+    "babel-loader": "^8.2.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
     "handlebars": "^4.7.7",
     "handlebars-loader": "^1.7.1",
-    "html-webpack-plugin": "^5.3.1",
-    "webpack": "^5.31.0",
-    "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^3.11.2"
-  }
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "browserslist": [
+    "Chrome >= 49",
+    "Firefox >= 45",
+    "Safari >= 9",
+    "Edge >= 12",
+    "IE >= 11",
+    "iOS >= 10"
+  ]
 }

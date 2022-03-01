@@ -10,9 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[contenthash:8].js',
-  },
-  devServer: {
-    contentBase: './dist',
+    publicPath: '', // needed for ie11
   },
   module: {
     rules: [
