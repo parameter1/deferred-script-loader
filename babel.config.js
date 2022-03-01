@@ -5,14 +5,6 @@ module.exports = (api) => {
     [
       '@babel/env',
       {
-        targets: {
-          chrome: '49',
-          firefox: '45',
-          safari: '9',
-          edge: '12',
-          ie: '11',
-          ios: '10',
-        },
         useBuiltIns: 'usage',
         corejs: '3.10',
         debug: false,

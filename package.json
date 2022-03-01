@@ -34,5 +34,13 @@
     "webpack": "^5.31.0",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
-  }
+  },
+  "browserslist": [
+    "Chrome >= 49",
+    "Firefox >= 45",
+    "Safari >= 9",
+    "Edge >= 12",
+    "IE >= 11",
+    "iOS >= 10"
+  ]
 }
