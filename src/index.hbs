@@ -70,11 +70,19 @@
           googletag.cmd.push(function() { googletag.enableServices(); });
         },
         /**
+         * When true, will only call the init function above but will _not_ load the remote script.
+         * To call the remote script, the `deferScript('load', { name: '' })` call must be executed.
+         * This is useful when you want to manually control when the script should execute (e.g. on scroll or intersection)
+         */
+         initOnly: true,
+        /**
          * Script attributes to pass.
          * By default both async and defer are set.
          */
          attrs: { async: 1, defer: 1 },
       });
+      // manually calling the googletag script.
+      deferScript('load', { name: 'googletag' });
 
       deferScript('register', {
         name: 'lazysizes',

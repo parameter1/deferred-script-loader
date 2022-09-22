@@ -17,6 +17,7 @@ class Queues {
     attrs,
     onScriptBuild,
     onScriptLoad,
+    initOnly,
   } = {}) {
     if (!name) throw new Error('A queue name is required.');
     if (this.queues[name]) throw new Error(`A script queue as already been registered for '${name}'`);
@@ -31,6 +32,7 @@ class Queues {
       queryString: this.queryString,
       onScriptBuild,
       onScriptLoad,
+      initOnly,
     });
   }
 
@@ -39,6 +41,12 @@ class Queues {
     if (!queue) throw new Error(`No queue has been registered for '${name}'`);
     queue.push({ fn });
     return this;
+  }
+
+  load({ name } = {}) {
+    const queue = this.queues[name];
+    if (!queue) throw new Error(`No queue has been registered for '${name}'`);
+    return queue.loadAndCallFns(true);
   }
 }
 
