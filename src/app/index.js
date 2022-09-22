@@ -13,6 +13,7 @@ class App {
     this.commands = [
       { handler: this.queues, method: 'register', as: 'register' },
       { handler: this.queues, method: 'call', as: 'call' },
+      { handler: this.queues, method: 'load', as: 'load' },
     ].reduce((o, binding) => {
       const { handler, method } = binding;
       return { ...o, [binding.as]: handler[method].bind(handler) };

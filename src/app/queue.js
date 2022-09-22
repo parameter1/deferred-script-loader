@@ -16,6 +16,7 @@ class Queue {
     queryString,
     onScriptBuild,
     onScriptLoad,
+    initOnly = false,
   } = {}) {
     if (!isFn(on) && !isValidOn(on)) throw new Error(`No event type found for '${on}'`);
     this.name = name;
@@ -32,6 +33,7 @@ class Queue {
     this.fns = [];
     this.logger = logger;
     this.onScriptLoad = onScriptLoad;
+    this.initOnly = initOnly;
     this.setRequestFrame(requestFrame);
     this.setOn(on);
     this.addListeners();
@@ -51,17 +53,21 @@ class Queue {
     if (on === 'ready') onDomReady(run, this.requestFrame);
   }
 
-  loadAndCallFns() {
-    this.logger.log(`flushing queue '${this.name}' via '${this.on}'`);
-    this.script.load({ on: this.getOn() })
-      .then(() => {
-        if (isFn(this.onScriptLoad)) {
-          this.logger.log(`calling onScriptLoad hook for '${this.name}'`);
-          this.onScriptLoad(this);
-        }
-        this.callQueuedFns();
-      })
-      .catch(() => this.logger.force('error', `unable to flush queue for '${this.name}'`));
+  loadAndCallFns(force) {
+    if (this.initOnly && !force) {
+      this.logger.warn(`the queue for '${this.name}' is in initOnly mode - remote script loading is prevented`);
+    } else {
+      this.logger.log(`flushing queue '${this.name}' via '${this.on}'`);
+      this.script.load({ on: this.getOn() })
+        .then(() => {
+          if (isFn(this.onScriptLoad)) {
+            this.logger.log(`calling onScriptLoad hook for '${this.name}'`);
+            this.onScriptLoad(this);
+          }
+          this.callQueuedFns();
+        })
+        .catch(() => this.logger.force('error', `unable to flush queue for '${this.name}'`));
+    }
   }
 
   callQueuedFns() {
