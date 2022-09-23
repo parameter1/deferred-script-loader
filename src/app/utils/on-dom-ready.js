@@ -3,13 +3,17 @@ export default (callback, requestFrame) => {
     document.addEventListener('DOMContentLoaded', function fn() {
       document.removeEventListener('DOMContentLoaded', fn);
       if (requestFrame) {
-        requestAnimationFrame(callback);
+        requestAnimationFrame(() => {
+          callback();
+        });
       } else {
         callback();
       }
     });
   } else if (requestFrame) {
-    requestAnimationFrame(callback);
+    requestAnimationFrame(() => {
+      callback();
+    });
   } else {
     callback();
   }

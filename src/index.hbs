@@ -59,7 +59,8 @@
          * Valid options include: immediate, ready, load, and never.
          * This can also be a function that returns the `on` string value.
          */
-        on: 'immediate',
+        on: 'ready',
+        requestFrame: true,
         /**
          * Queue setup hook.
          * The init function must assign a value to the `window` object directly, not declare a local var.

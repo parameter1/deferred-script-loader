@@ -1,7 +1,9 @@
 export default (callback, requestFrame) => {
   if (document.readyState === 'complete') {
     if (requestFrame) {
-      requestAnimationFrame(callback);
+      requestAnimationFrame(() => {
+        callback();
+      });
     } else {
       callback();
     }
@@ -9,7 +11,9 @@ export default (callback, requestFrame) => {
     window.addEventListener('load', function fn() {
       window.removeEventListener('load', fn);
       if (requestFrame) {
-        requestAnimationFrame(callback);
+        requestAnimationFrame(() => {
+          callback();
+        });
       } else {
         callback();
       }
