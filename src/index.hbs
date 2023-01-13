@@ -60,6 +60,15 @@
          * This can also be a function that returns the `on` string value.
          */
         on: 'ready',
+        /**
+         * If set, delays load of the external script until a set time after the `on` even fires.
+         * This setting is _not_ compatible with `initOnly`: If using `initOnly`, you must handle
+         * necessary delay before calling `load`.
+         */
+        delayMs: 3000,
+        /**
+         * Determines whether to execute the script within an animation frame in the browser.
+         */
         requestFrame: true,
         /**
          * Queue setup hook.
@@ -75,15 +84,15 @@
          * To call the remote script, the `deferScript('load', { name: '' })` call must be executed.
          * This is useful when you want to manually control when the script should execute (e.g. on scroll or intersection)
          */
-         initOnly: true,
+         initOnly: false,
         /**
          * Script attributes to pass.
          * By default both async and defer are set.
          */
          attrs: { async: 1, defer: 1 },
       });
-      // manually calling the googletag script.
-      deferScript('load', { name: 'googletag' });
+      // manually calling the googletag script when using `initOnly=true`.
+      // deferScript('load', { name: 'googletag' });
 
       deferScript('register', {
         name: 'lazysizes',
