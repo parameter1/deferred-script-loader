@@ -73,7 +73,7 @@ class Queue {
       };
 
       if (this.delayMs) {
-        this.logger.log(`Delaying script load for ${this.name} by ${this.delayMs}...`);
+        this.logger.log(`Delaying script load for '${this.name}' by ${this.delayMs}ms...`);
         setTimeout(fn, this.delayMs);
       } else {
         fn();
