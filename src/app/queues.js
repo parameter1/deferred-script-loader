@@ -18,6 +18,7 @@ class Queues {
     onScriptBuild,
     onScriptLoad,
     initOnly,
+    delayMs,
   } = {}) {
     if (!name) throw new Error('A queue name is required.');
     if (this.queues[name]) throw new Error(`A script queue as already been registered for '${name}'`);
@@ -33,6 +34,7 @@ class Queues {
       onScriptBuild,
       onScriptLoad,
       initOnly,
+      delayMs,
     });
   }
 
