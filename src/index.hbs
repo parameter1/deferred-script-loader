@@ -61,7 +61,8 @@
          */
         on: 'ready',
         /**
-         * If set, delays load of the external script until a set time after the `on` even fires.
+         * If set, delays load of the external script until a set time after the `on` event fires.
+         * When using `initOnly=true`, this delay is still applied when manually calling `load`.
          */
         delayMs: 3000,
         /**
