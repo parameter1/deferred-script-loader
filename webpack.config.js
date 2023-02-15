@@ -12,6 +12,10 @@ module.exports = {
     filename: '[contenthash:8].js',
     publicPath: '', // needed for ie11
   },
+  optimization: {
+    // @see https://webpack.js.org/configuration/optimization/#optimizationminimize
+    minimize: true,
+  },
   module: {
     rules: [
       {
