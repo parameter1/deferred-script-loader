@@ -15,7 +15,7 @@
       })(window, 'deferScript');
     </script>
     <!-- load the module -->
-    <script type="module" src="./src/index.js"></script>
+    <script type="module" src="./src/index.js" async defer></script>
 
     <!-- run -->
     <script>
@@ -27,6 +27,7 @@
       deferScript('register', {
         name: 'p1events',
         src: 'https://cdn.parameter1.com/p1-events/1ed2a30f.js',
+        esm: true,
         on: 'load',
         targetTag: 'head',
         init: function() { var i = window, r = 'p1events'; i['__p1e'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments); }; }

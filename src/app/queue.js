@@ -9,6 +9,7 @@ class Queue {
     name,
     src,
     on = 'ready',
+    esm = false,
     delayMs,
     requestFrame,
     targetTag,
@@ -26,6 +27,7 @@ class Queue {
     this.script = new RemoteScript({
       name,
       src,
+      esm,
       targetTag,
       attrs,
       logger,

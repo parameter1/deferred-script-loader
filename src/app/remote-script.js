@@ -11,6 +11,7 @@ class RemoteScript {
   constructor({
     name,
     src,
+    esm = false,
     targetTag = 'body',
     attrs = {},
     logger,
@@ -19,6 +20,7 @@ class RemoteScript {
   } = {}) {
     if (!src) throw new Error('A script source is required.');
     if (!isValidTarget(targetTag)) throw new Error('An invalid append target was specified.');
+    this.esm = esm;
     this.name = name;
     this.logger = logger;
     this.queryString = queryString;
@@ -32,16 +34,16 @@ class RemoteScript {
 
   load({ on } = {}) {
     if (!this.promise) {
-      const { src } = this;
+      const { esm, src } = this;
       this.logger.log('loading script', src);
       this.promise = new Promise((resolve, reject) => {
         const script = this.buildScriptElement();
         script.onload = () => {
-          this.logger.log('script loaded successfully', src);
+          this.logger.log('script loaded successfully', src, { module: esm });
           resolve();
         };
         script.onerror = () => {
-          this.logger.force('error', 'script loading failed', src);
+          this.logger.force('error', 'script loading failed', src, { module: esm });
           reject();
         };
         this.insertElement({ script, on });
@@ -51,11 +53,17 @@ class RemoteScript {
   }
 
   buildScriptElement() {
-    const { crossOrigin } = this;
+    const { esm, crossOrigin } = this;
     const script = document.createElement('script');
-    script.async = this.async;
-    script.defer = this.defer;
-    script.type = 'text/javascript';
+    if (esm) {
+      script.async = 1;
+      script.defer = 1;
+      script.type = 'module';
+    } else {
+      script.async = this.async;
+      script.defer = this.defer;
+      script.type = 'text/javascript';
+    }
     if (crossOrigin != null) script.crossOrigin = crossOrigin;
     script.src = this.src;
     if (isFn(this.onScriptBuild)) this.onScriptBuild(script);
