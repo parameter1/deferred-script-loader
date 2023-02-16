@@ -1,20 +1,22 @@
 {
   "name": "@parameter1/deferred-script-loader",
   "version": "0.0.0",
+  "type": "module",
   "main": "src/index.js",
   "repository": "https://github.com/parameter1/deferred-script-loader.git",
   "author": "Jacob Bare <jacob@parameter1.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch",
-    "dev": "webpack serve --open --port 61120 --host dsl.dev.parameter1.com",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint --ext .js ./",
     "test": "yarn lint"
   },
   "devDependencies": {
     "eslint": "^8.34.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5"
+    "eslint-plugin-import": "^2.27.5",
+    "vite": "^4.1.1"
   }
 }
