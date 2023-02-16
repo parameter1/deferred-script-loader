@@ -11,6 +11,7 @@ class Queues {
   register({
     name,
     src,
+    esm = false,
     on,
     targetTag,
     requestFrame,
@@ -25,6 +26,7 @@ class Queues {
     this.queues[name] = new Queue({
       name,
       src,
+      esm,
       on,
       targetTag,
       requestFrame,

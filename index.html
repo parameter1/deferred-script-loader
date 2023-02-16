@@ -2,18 +2,23 @@
 <html>
   <head>
     <meta charset="utf-8"/>
-    <title>{{htmlWebpackPlugin.options.title}}</title>
+    <title>Deferred Script Loader</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
+    <!-- create the deferScript queue -->
     <script>
-      (function (i,s,o,g,r,a,m) {
-        i['__p1defer'] = r; i[r] = i[r] || function () {
+      (function (i,r) {
+        window.__p1defer = r; i[r] = i[r] || function () {
           var args = arguments; (i[r].q = i[r].q || []).push(args);
           if (args[0] === 'register' && args[1] && args[1].init) args[1].init();
-        }, a = s.createElement(o),
-          m = s.getElementsByTagName(o)[0]; a.async = 1; a.defer = 1; a.src = g; m.parentNode.insertBefore(a, m)
-      })(window, document, 'script', '{{ htmlWebpackPlugin.files.js }}', 'deferScript');
+        }
+      })(window, 'deferScript');
+    </script>
+    <!-- load the module -->
+    <script type="module" src="./src/index.js" async defer></script>
 
+    <!-- run -->
+    <script>
       /**
        * Initializes the deferScript lib.
        * Setting debug to `true` will output console logs
@@ -22,6 +27,7 @@
       deferScript('register', {
         name: 'p1events',
         src: 'https://cdn.parameter1.com/p1-events/1ed2a30f.js',
+        esm: true,
         on: 'load',
         targetTag: 'head',
         init: function() { var i = window, r = 'p1events'; i['__p1e'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments); }; }
@@ -104,7 +110,7 @@
     <div class="container mt-3">
       <div class="row">
         <div class="col">
-          <h1>{{htmlWebpackPlugin.options.title}}</h1>
+          <h1>Deferred Script Loader</h1>
           <div id="div-gpt-ad-1616266714451-667" class="ad-container__wrapper">
             <script>
               p1events('init', {
@@ -140,13 +146,6 @@
       <div class="row">
         <div class="col">
           <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://img.overdriveonline.com/files/base/randallreilly/all/image/2021/03/Haul_of_fame.6054d6d64c241.png?auto=format%2Ccompress&amp;fit=crop&amp;h=400&amp;q=70&amp;w=600" data-srcset="https://img.overdriveonline.com/files/base/randallreilly/all/image/2021/03/Haul_of_fame.6054d6d64c241.png?auto=format%2Ccompress&amp;dpr=2&amp;fit=crop&amp;h=400&amp;q=70&amp;w=600 2x" class="node__image lazyload" alt="Marhoefer, Ken Waugh, 'Fast Freddie' Lieb, and Idella Marie Hansen">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <h4>Webpack Config</h4>
-          <pre>{{json htmlWebpackPlugin}}</pre>
         </div>
       </div>
     </div>
