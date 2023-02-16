@@ -115,3 +115,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 non_es5_node_modules
+.DS_Store
