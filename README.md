@@ -118,7 +118,9 @@ Builds to native ESM using Vite (`<script type="module">`).
 ### Sizes (non-gzipped)
 - legacy webpack build: 54k
 - legacy webpack build less `querystring`: 60k (likely polyfilling `URLSearchParams`)
-- vite build with specific browser targets: **7.97k**
+- vite build with specific browser targets
+  - using standard `esbuild` (`dist/lib.js`): ~10k
+  - post build with `terser` (`dist/lib.min.js`): ~7k
 
 ### Browser Targets
 #### Modern

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "terser -c --module ./dist/lib.js > ./dist/lib.min.js",
     "preview": "vite preview",
     "lint": "eslint --ext .js ./",
     "test": "yarn lint"
@@ -17,6 +18,7 @@
     "eslint": "^8.34.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
+    "terser": "^5.16.3",
     "vite": "^4.1.1"
   }
 }
