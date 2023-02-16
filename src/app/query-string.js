@@ -1,4 +1,3 @@
-import querystring from 'querystring';
 import isValidOn from './utils/is-valid-on';
 import isValidTarget from './utils/is-valid-target';
 
@@ -6,7 +5,7 @@ const isValidBoolean = (v) => v === '1' || v === 'true';
 
 class QueryString {
   constructor({ prefix = 'defer' } = {}) {
-    this.parsed = querystring.parse(window.location.search.replace(/^\?/, ''));
+    this.parsed = new URLSearchParams(window.location.search);
     this.prefix = prefix;
   }
 
@@ -54,7 +53,7 @@ class QueryString {
 
   get(key) {
     const param = `${this.prefix}.${key}`;
-    return this.parsed[param];
+    return this.parsed.get(param);
   }
 }
 
