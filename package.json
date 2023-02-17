@@ -17,8 +17,17 @@
   "devDependencies": {
     "eslint": "^8.34.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-compat": "^4.1.2",
     "eslint-plugin-import": "^2.27.5",
     "terser": "^5.16.3",
     "vite": "^4.1.1"
-  }
+  },
+  "browserslist": [
+    "chrome 64",
+    "edge 79",
+    "safari 11.1",
+    "firefox 67",
+    "opera 51",
+    "ios 12"
+  ]
 }
