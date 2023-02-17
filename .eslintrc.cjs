@@ -1,6 +1,7 @@
 module.exports = {
-  extends: 'airbnb-base',
+  extends: ['airbnb-base', 'plugin:compat/recommended'],
   plugins: [
+    'compat',
     'import',
   ],
   env: {
